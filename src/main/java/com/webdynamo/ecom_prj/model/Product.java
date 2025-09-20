@@ -18,17 +18,17 @@ public class Product {
     private int id;
 
     private String name;
-    private String desc;
+    private String description;
     private String brand;
     private double price;
     private String category;
     private Date releaseDate;
-    private int qty;
-    private boolean available;
+    private int stockQuantity;
+    private boolean productAvailable;
 
     private String imageName;
     private String imageType;
 
     @Lob
-    private byte[] imageDate;
+    private byte[] imageData;
 }
