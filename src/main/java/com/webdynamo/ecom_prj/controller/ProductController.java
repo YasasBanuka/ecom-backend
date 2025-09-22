@@ -29,6 +29,7 @@ public class ProductController {
 
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id) {
+
         Product product = service.getProduct(id);
         if (product != null) {
             return new ResponseEntity<>(product, HttpStatus.OK);
@@ -39,24 +40,23 @@ public class ProductController {
 
     @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestPart Product product, @RequestPart MultipartFile imageFile) {
+
         try {
             Product product1 = service.addProduct(product, imageFile);
             return new ResponseEntity<>(product1, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
-
         }
     }
 
 
     @GetMapping("/product/{productId}/image")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productId) {
+
         Product product = service.getProduct(productId);
         byte[] imageFile = product.getImageData();
 
         return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
-
     }
 
     @PutMapping("/product/{id}")
@@ -73,13 +73,11 @@ public class ProductController {
         } else {
             return new ResponseEntity<>("Failed to update", HttpStatus.BAD_REQUEST);
         }
-
-
     }
-
 
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
+
         Product product = service.getProduct(id);
         if (product != null) {
             service.deleteProduct(id);
@@ -87,7 +85,12 @@ public class ProductController {
         } else {
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
-
     }
 
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+        System.out.println("Searching products with" +  keyword);
+        List<Product> products = service.searchProducts(keyword);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 }
